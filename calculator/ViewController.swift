@@ -15,15 +15,15 @@ class ViewController: UIViewController {
     var result = Float()
     var operation = ""
     var typingNumber = false
+    var typingOperation = false
     
     @IBAction func number(sender: AnyObject) {
         let number = sender.currentTitle
-        
+    
         if typingNumber == true {
             if screen.text == "0" {
                 screen.text = number
-            }
-            else {
+            } else {
                 screen.text = screen.text! + number!!
             }
         } else {
@@ -31,34 +31,8 @@ class ViewController: UIViewController {
         }
         
         typingNumber = true
-    }
-    
-    @IBAction func operation(sender: AnyObject) {
-        operation = sender.currentTitle!!
         
-        firstNumber = (screen.text! as NSString).floatValue
-        
-        screen.text = "0"
-    }
-    
-    @IBAction func opposite(sender: AnyObject) {
-        if Float(screen.text!) > 0 {
-            screen.text = "-" + screen.text!
-        } else {
-            screen.text = screen.text
-        }
-    }
-    
-    @IBAction func point(sender: AnyObject) {
-        let dot = sender.currentTitle
-        
-        screen.text = screen.text! + dot!!
-    }
-    
-    @IBAction func equal(sender: AnyObject) {
         secondNumber = (screen.text! as NSString).floatValue
-        
-        typingNumber = false
         
         if operation == "＋" {
             result = firstNumber + secondNumber
@@ -71,20 +45,64 @@ class ViewController: UIViewController {
         } else if operation == "%" {
             result = (firstNumber / secondNumber) / 100
         }
+    }
+    
+    @IBAction func operation(sender: AnyObject) {
+        operation = sender.currentTitle!!
         
+        if typingOperation == true {
+            firstNumber = result
+        } else {
+            firstNumber = (screen.text! as NSString).floatValue
+        }
+        
+        screen.text = "0"
+        typingOperation = true
+    }
+    
+    @IBAction func opposite(sender: AnyObject) {
+        if Float(screen.text!) > 0 {
+            screen.text = "-" + screen.text!
+        } else {
+            screen.text = screen.text
+        }
+    }
+    
+    @IBAction func point(sender: AnyObject) {
+        let dot = sender.currentTitle
+    
+        screen.text = screen.text! + dot!!
+    }
+    
+    @IBAction func equal(sender: AnyObject) {
+        typingNumber = false
+    
+//        if operation == "＋" {
+//            result = firstNumber + secondNumber
+//        } else if operation == "−" {
+//            result = firstNumber - secondNumber
+//        } else if operation == "×" {
+//            result = firstNumber * secondNumber
+//        } else if operation == "÷" {
+//            result = firstNumber / secondNumber
+//        } else if operation == "%" {
+//            result = (firstNumber / secondNumber) / 100
+//        }
         
         if result == Float(Int(result)) {
             screen.text = "\(Int(result))"
         } else {
             screen.text = "\(result)"
         }
-        
     }
     
     @IBAction func allClear(sender: AnyObject) {
         firstNumber = 0
         secondNumber = 0
         result = 0
+        operation = ""
+        typingOperation = false
+        typingNumber = false
         screen.text = "0"
     }
 }
